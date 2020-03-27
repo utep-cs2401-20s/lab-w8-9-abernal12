@@ -1,8 +1,8 @@
 class AminoAcidLL{
-  private char aminoAcid;
-  private String[] codons;
-  private int[] counts;
-  private AminoAcidLL next; // pointer to next node
+  private char aminoAcid; // the character representing the Amino Acid stored in this element
+  private String[] codons; // the codons that represent this Amino Acid
+  private int[] counts; // the count of the codon usage... codons.length will be equal to counts.length
+  private AminoAcidLL next; // pointer to next node // the next element in the linked list, had the value NULL when the current element is the last
 
   AminoAcidLL(){
 
@@ -14,16 +14,17 @@ class AminoAcidLL{
    * pair and increments the codon counter for that codon.
    * NOTE: Does not check for repeats!! */
   AminoAcidLL(String inCodon){
-      aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
-      codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid);
-      //private counts // use helper method to count the number of codons that create the aminoAcid
+      aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon); // looks at the AminoAcidResources and gets the amino acid frim the codons given
+      codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid); // looks at the AminoAcidResources and gets the codons list from the amino acids given
+      incrCodons(inCodon); //
+      next = null;
   }
 
   /********************************************************************************************/
   /*
    * helperMethod will be used to count the number of codons that create the aminoAcid
-   */
-  private void counts(int[] a){
+   */ // use helper method to count the number of codons that create the aminoAcid
+  private void incrCodons(String c){
 
   }
   /********************************************************************************************/
@@ -34,17 +35,28 @@ class AminoAcidLL{
    * addCodon will use the helper method to look and compare through the string array
    */
   private void addCodon(String inCodon){
-    while(AminoAcidLL.next != null){
       // base case
-      if(inCodon == null){ // if aminoAcid is equal to aminoAcid node
-        AminoAcidLL = new AminoAcidLL(inCodon);
+      if(next == null){ // if aminoAcid is equal to aminoAcid node
+        if(){ // if this node has this codon
+          incrCodons(inCodon);
+        }else{
+          next = new AminoAcidLL();
+        }
       }
-    }
+      if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){
+        incrCodons(inCodon);
+      }else{
+        if(next != null){
+          next.addCodon(inCodon); // check
+        }
+      }
   }
 
 
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
+  // how many codons does the amino acid has //
+  // look at counts, and sum up the elements at counts //
   private int totalCount(){
     return 0;
   }
@@ -85,6 +97,7 @@ class AminoAcidLL{
 
   /********************************************************************************************/
   /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
+  //
   public char[] aminoAcidList(){
     return new char[]{};
   }
