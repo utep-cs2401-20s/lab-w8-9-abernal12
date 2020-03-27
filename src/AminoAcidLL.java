@@ -37,17 +37,17 @@ class AminoAcidLL{
   private void addCodon(String inCodon){
       // base case
       if(next == null){ // if aminoAcid is equal to aminoAcid node
-        if(){ // if this node has this codon
-          incrCodons(inCodon);
+        if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){ // if this node has this codon
+          incrCodons(inCodon); // increments every time the node has the codon
         }else{
-          next = new AminoAcidLL();
+          next = new AminoAcidLL(); // if the node does not contain the codon, then start again with the next node
         }
       }
-      if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){
-        incrCodons(inCodon);
+      if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){ // if the amino acid is equal to the aminoacid character from the amino acid resources class
+        incrCodons(inCodon); // then increment the number of codons
       }else{
-        if(next != null){
-          next.addCodon(inCodon); // check
+        if(next != null){ // if the next node does not equal to null
+          next.addCodon(inCodon); // add another codon to check to see if it fits within the aminoacid
         }
       }
   }
@@ -55,9 +55,16 @@ class AminoAcidLL{
 
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
-  // how many codons does the amino acid has //
+  // how many codons does the amino acid have //
   // look at counts, and sum up the elements at counts //
   private int totalCount(){
+    // first check from the amino acid resources under get codon list from aminio acid to see how many codons the certain amino acid conatains
+    // for example, if the chosen amino acid is K, then the number of codons it would return is a 2, since there are two sets of codons that correspond to that particular amino acid
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon()){ // if the amino acid chosen equals to the same amino acid from the get amino acid from codon
+      // then it will look at the codons from that specific amino acid.
+      return  // after, it will the return the number of codons the amino acid has
+    }
+    // then look at the counts and add up the number of elements at the counts
     return 0;
   }
 
