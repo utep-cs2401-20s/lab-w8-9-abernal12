@@ -58,14 +58,20 @@ class AminoAcidLL{
   // how many codons does the amino acid have //
   // look at counts, and sum up the elements at counts //
   private int totalCount(){
+    //the aminoAcid as a character
+    //the codons which are 3-length Strings of the codons which can make up this amino acid
+    //the counts which is a list of the same size as the number of possible codons which can make this amino acid -- it keeps count of how many of which codons made this amino acid --- hint this is what you'll focus on in the totalCount() method
+    //the next node, which is a reference to the next element in this Linked List
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // first check from the amino acid resources under get codon list from aminio acid to see how many codons the certain amino acid conatains
     // for example, if the chosen amino acid is K, then the number of codons it would return is a 2, since there are two sets of codons that correspond to that particular amino acid
-    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon()){ // if the amino acid chosen equals to the same amino acid from the get amino acid from codon
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(codons)){ // if the amino acid chosen equals to the same amino acid from the get amino acid from codon
       // then it will look at the codons from that specific amino acid.
-      return  // after, it will the return the number of codons the amino acid has
+      // after, it will the return the number of codons the amino acid has
     }
     // then look at the counts and add up the number of elements at the counts
     return 0;
+    //then return sum
   }
 
   /********************************************************************************************/
@@ -95,7 +101,7 @@ class AminoAcidLL{
   }
 
   /********************************************************************************************/
-  /* Same ad above, but counts the codon usage differences
+  /* Same as above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
     return 0;
@@ -104,14 +110,21 @@ class AminoAcidLL{
 
   /********************************************************************************************/
   /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
+  // combination of loops and recursion //
   //
   public char[] aminoAcidList(){
-    return new char[]{};
+    if(next == null){
+      return new char[]{};
+    }
+    char[] a = next.aminoAcidList();
+    char[] len = new char[a.length + 1]; // creating a new array with 1 size bigger than the other one
+
   }
 
   /********************************************************************************************/
   /* Recursively returns the total counts of amino acids in the order that they are in in the linked list. */
   public int[] aminoAcidCounts(){
+    
     return new int[]{};
   }
 
@@ -119,6 +132,7 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* recursively determines if a linked list is sorted or not */
   public boolean isSorted(){
+
     return false;
   }
 
@@ -126,6 +140,10 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
   public static AminoAcidLL createFromRNASequence(String inSequence){
+    AminoAcidLL list = new AminoAcidLL();
+    for(int i = 0; i < inSequence.length(); i++){ // looks through the RNA string
+
+    }
     return null;
   }
 
