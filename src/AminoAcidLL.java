@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.objects.NativeString;
+
 class AminoAcidLL{
   private char aminoAcid; // the character representing the Amino Acid stored in this element
   private String[] codons; // the codons that represent this Amino Acid
@@ -14,7 +16,7 @@ class AminoAcidLL{
    * pair and increments the codon counter for that codon.
    * NOTE: Does not check for repeats!! */
   AminoAcidLL(String inCodon){
-      aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon); // looks at the AminoAcidResources and gets the amino acid frim the codons given
+      aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon); // looks at the AminoAcidResources and gets the amino acid from the codons given
       codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid); // looks at the AminoAcidResources and gets the codons list from the amino acids given
       incrCodons(inCodon); //
       next = null;
@@ -25,7 +27,11 @@ class AminoAcidLL{
    * helperMethod will be used to count the number of codons that create the aminoAcid
    */ // use helper method to count the number of codons that create the aminoAcid
   private void incrCodons(String c){
-
+    for(int i = 0; i < codons.length; i++){
+      if(codons[i].equals(c.toUpperCase())){
+        counts[i]++;
+      }
+    }
   }
   /********************************************************************************************/
   /* Recursive method that increments the count for a specific codon:
@@ -36,20 +42,14 @@ class AminoAcidLL{
    */
   private void addCodon(String inCodon){
       // base case
-      if(next == null){ // if aminoAcid is equal to aminoAcid node
-        if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){ // if this node has this codon
-          incrCodons(inCodon); // increments every time the node has the codon
-        }else{
-          next = new AminoAcidLL(); // if the node does not contain the codon, then start again with the next node
-        }
-      }
-      if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){ // if the amino acid is equal to the aminoacid character from the amino acid resources class
-        incrCodons(inCodon); // then increment the number of codons
-      }else{
-        if(next != null){ // if the next node does not equal to null
-          next.addCodon(inCodon); // add another codon to check to see if it fits within the aminoacid
-        }
-      }
+    if(AminoAcidResources.getAminoAcidFromCodon(inCodon) == aminoAcid){ // if this node has this codon
+      incrCodons(inCodon); // increments every time the node has the codon
+    }else if(next == null) {
+      next.addCodon(inCodon);
+
+    }else{
+      next = new AminoAcidLL(inCodon); // if the node does not contain the codon, then start again with the next node
+    }
   }
 
 
@@ -58,20 +58,11 @@ class AminoAcidLL{
   // how many codons does the amino acid have //
   // look at counts, and sum up the elements at counts //
   private int totalCount(){
-    //the aminoAcid as a character
-    //the codons which are 3-length Strings of the codons which can make up this amino acid
-    //the counts which is a list of the same size as the number of possible codons which can make this amino acid -- it keeps count of how many of which codons made this amino acid --- hint this is what you'll focus on in the totalCount() method
-    //the next node, which is a reference to the next element in this Linked List
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // first check from the amino acid resources under get codon list from aminio acid to see how many codons the certain amino acid conatains
-    // for example, if the chosen amino acid is K, then the number of codons it would return is a 2, since there are two sets of codons that correspond to that particular amino acid
-    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(codons)){ // if the amino acid chosen equals to the same amino acid from the get amino acid from codon
-      // then it will look at the codons from that specific amino acid.
-      // after, it will the return the number of codons the amino acid has
+    int sum = 0;
+    for(int i = 0; i < counts.length; i++){
+      sum += counts[i];
     }
-    // then look at the counts and add up the number of elements at the counts
-    return 0;
-    //then return sum
+    return sum;
   }
 
   /********************************************************************************************/
@@ -96,13 +87,55 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Recursive method that finds the differences in **Amino Acid** counts. 
    * the list *must* be sorted to use this method */
-  public int aminoAcidCompare(AminoAcidLL inList){
-    return 0;
+  // sort the list
+  // this one doesnt have anything to compare to
+  // check if the aminoacids are equal to each other
+  ////////////////////////////////////////////////
+  // what is the total counts of this(list) node vs the total counts on this node(inList).
+  // return the sum of different over whole lists
+  // for sure test this method
+  public int aminoAcidCompare(AminoAcidLL inList) {
+    if(!inList.isSorted()) {
+      return -1;
+    }
+    int diff = 0;
+    if(inList == null) {
+      diff += totalCount(); // gets the count for the total list
+    }
+    if(next != null){ // checks to see if it has a pointer to another node and if so compare
+      diff += next.aminoAcidCompare(inList.next);
+    }
+    else if(aminoAcid == inList.aminoAcid) { // total count of aminoAcid and totalCount of inList
+      diff = Math.abs(totalCount() - inList.totalCount()); // to get the
+      if (next != null) {
+      }
+      if (next == null && inList.next != null) {
+        diff += aminoAcidCompare(inList.next);
+      } else if (next != null && aminoAcid < inList.aminoAcid) {
+        diff += totalCount();
+        if (next != null) { // if the list is not null, class list
+          diff += next.aminoAcidCompare();
+
+        }
+      }
+      else if(next == null || aminoAcid > inList.aminoAcid){ // class we recieved
+        diff += inList.totalCount();
+        if(inList.next != null){
+          diff += compareinList.next;
+        }
+      }
+
+    }
+    return diff;
   }
 
   /********************************************************************************************/
   /* Same as above, but counts the codon usage differences
    * Must be sorted. */
+  // not paying attention to the total counts
+  // we use codon difference
+  // return sum of differences over lists
+  // for sure test this method
   public int codonCompare(AminoAcidLL inList){
     return 0;
   }
@@ -119,6 +152,7 @@ class AminoAcidLL{
     char[] a = next.aminoAcidList();
     char[] len = new char[a.length + 1]; // creating a new array with 1 size bigger than the other one
 
+    return a;
   }
 
   /********************************************************************************************/
@@ -132,25 +166,44 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* recursively determines if a linked list is sorted or not */
   public boolean isSorted(){
-
+    if(aminoAcid < next.aminoAcid){
+      return true; 
+    }
     return false;
   }
 
 
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
+  // with the list created, you will have to use another method
   public static AminoAcidLL createFromRNASequence(String inSequence){
-    AminoAcidLL list = new AminoAcidLL();
-    for(int i = 0; i < inSequence.length(); i++){ // looks through the RNA string
-
+    AminoAcidLL list = null; // created a linked list from the AminoAcidLL
+    if(inSequence.length() >= 3 && AminoAcidResources.getAminoAcidFromCodon(inSequence.substring(0,2)) != '*'){
+      list = new AminoAcidLL(inSequence.substring(0,3));
+      for(int i = 3; i < inSequence.length() - 2; i+=3){ // looks through the RNA string, start at index 3
+        if (AminoAcidResources.getAminoAcidFromCodon(inSequence.substring(i, i + 3)) != '*') { //
+          list.addCodon(inSequence.substring(i,i+3));
+        }else{
+          System.out.print("error"); // displays once star is detected
+        }
+      }
     }
-    return null;
+    return list;
   }
 
 
   /********************************************************************************************/
   /* sorts a list by amino acid character*/
-  public static AminoAcidLL sort(AminoAcidLL inList){
-    return null;
+  public static AminoAcidLL sort(AminoAcidLL inList) {
+    AminoAcidLL listSort = inList;
+    for(listSort = inList; listSort != null; listSort = listSort.next){
+
+      for(listSort node2 = node1; node2!= null; node2 = node2.next){
+        if(min.value > node2.value){
+          min = node2;
+        }
+      }
+    }
+    return listSort;
   }
 }
