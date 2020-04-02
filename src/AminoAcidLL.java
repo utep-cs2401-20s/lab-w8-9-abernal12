@@ -108,23 +108,21 @@ class AminoAcidLL{
     else if(aminoAcid == inList.aminoAcid) { // total count of aminoAcid and totalCount of inList
       diff = Math.abs(totalCount() - inList.totalCount()); // to get the
       if (next != null) {
+        diff += next.aminoAcidCompare(inList.next);
       }
       if (next == null && inList.next != null) {
         diff += aminoAcidCompare(inList.next);
-      } else if (next != null && aminoAcid < inList.aminoAcid) {
-        diff += totalCount();
-        if (next != null) { // if the list is not null, class list
-          diff += next.aminoAcidCompare();
-
-        }
       }
-      else if(next == null || aminoAcid > inList.aminoAcid){ // class we recieved
-        diff += inList.totalCount();
-        if(inList.next != null){
-          diff += compareinList.next;
-        }
+    }else if (next != null && aminoAcid < inList.aminoAcid) {
+      diff += totalCount();
+      if (next != null) { // if the list is not null, class list
+        diff += next.aminoAcidCompare(inList.next);
       }
-
+    }else if(next == null || aminoAcid > inList.aminoAcid){ // class we recieved
+      diff += inList.totalCount();
+      if(inList.next != null){
+        diff += aminoAcidCompare(inList.next);
+      }
     }
     return diff;
   }
