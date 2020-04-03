@@ -135,7 +135,36 @@ class AminoAcidLL{
   // return sum of differences over lists
   // for sure test this method
   public int codonCompare(AminoAcidLL inList){
-    return 0;
+    if(!inList.isSorted()) {
+      return -1;
+    }
+    int diff = 0;
+    if(inList == null) {
+      diff += totalCount(); // gets the count for the total list
+    }
+    if(next != null){ // checks to see if it has a pointer to another node and if so compare
+      diff += next.codonCompare(inList.next);
+    }
+    else if(aminoAcid == inList.aminoAcid) { // total count of aminoAcid and totalCount of inList
+      diff = Math.abs(totalCount() - inList.totalCount()); // to get the
+      if (next != null) {
+        diff += next.codonCompare(inList.next);
+      }
+      if (next == null && inList.next != null) {
+        diff += codonCompare(inList.next);
+      }
+    }else if (next != null && aminoAcid < inList.aminoAcid) {
+      diff += totalCount();
+      if (next != null) { // if the list is not null, class list
+        diff += next.codonCompare(inList.next);
+      }
+    }else if(next == null || aminoAcid > inList.aminoAcid){ // class we recieved
+      diff += inList.totalCount();
+      if(inList.next != null){
+        diff += codonCompare(inList.next);
+      }
+    }
+    return diff;
   }
 
 
