@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-class AminoAcidLLTester {
+public class AminoAcidLLTester {
 
     @Test
     void codonCompare() {
@@ -17,7 +17,7 @@ class AminoAcidLLTester {
     }
 
     @Test
-    void aminoAcid(){
+    void aminoAcidCompare(){
         AminoAcidLL aminoAcidTest = AminoAcidLL.createFromRNASequence("GCUAGCGAAGCUAGA"); // used as the given Amino Acid list to compare
         AminoAcidLL result = AminoAcidLL.createFromRNASequence("GCUAGCGAAGCUAGA"); // the result of how the list should look like
         aminoAcidTest = AminoAcidLL.sort(aminoAcidTest);
@@ -26,5 +26,51 @@ class AminoAcidLLTester {
         int testaminoAcid = result.aminoAcidCompare(aminoAcidTest);
         int diffResult = 2;
         assertEquals(diffResult,testaminoAcid);
+    }
+
+    @Test
+    void aminoAcidList(){
+        String aminoAcidList = "GAUAGG";
+        AminoAcidLL result = AminoAcidLL.createFromRNASequence(aminoAcidList);
+        char[] given = result.aminoAcidList();
+        char[] expected = {};
+    }
+
+    @Test
+    void aminoAcidCounts(){
+
+    }
+
+    @Test
+    void isSorted(){
+
+    }
+
+    @Test
+    void createFromRNASequence(){
+
+    }
+
+    @Test
+    void sort(){
+
+    }
+
+    @Test
+    void sort2(){
+
+    }
+
+    @Test
+    void sort3(){
+        AminoAcidLL aminoAcidTest = AminoAcidLL.createFromRNASequence("GCUAGCGAAGCUAGA"); // used as the given Amino Acid list to compare
+        AminoAcidLL result = AminoAcidLL.createFromRNASequence("AAAAACCCGGGGGUU"); // the result of how the list should look like
+        aminoAcidTest = AminoAcidLL.sort(aminoAcidTest);
+        result = AminoAcidLL.sort(result);
+    }
+
+    @Test
+    void aminoAcidList2(){
+
     }
 }
