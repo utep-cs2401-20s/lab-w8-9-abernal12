@@ -33,7 +33,8 @@ public class AminoAcidLLTester {
         String aminoAcidList = "GAUAGG";
         AminoAcidLL result = AminoAcidLL.createFromRNASequence(aminoAcidList);
         char[] given = result.aminoAcidList();
-        char[] expected = {};
+        char[] expected = {'E', 'W', 'V'};
+        assertEquals(given, expected);
     }
 
     @Test
